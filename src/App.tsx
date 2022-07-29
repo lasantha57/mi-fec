@@ -4,6 +4,8 @@ import { VideosTable } from './components/videos-table';
 import { getVideos } from './services/videos';
 import { ProcessedVideo } from './common/interfaces';
 
+import "./index.css";
+
 const App: React.FC = () => {
   const [videos, setVideos] = useState<ProcessedVideo[]>([]);
 
