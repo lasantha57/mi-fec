@@ -5,6 +5,7 @@ import { VideosTable } from './components/VideosTable';
 import { getVideos } from './services/videos';
 import { ProcessedVideo } from './common/interfaces';
 import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 
 import "./index.css";
 
@@ -20,7 +21,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Header></Header>
+      <Header />
       <Routes>
         <Route path="/" element={<VideosTable videos={videos} />} />
         <Route path="/video/new" element={<>New Video</>} />
@@ -28,6 +29,7 @@ const App: React.FC = () => {
         <Route path="/about-us" element={<>About us</>} />
         <Route path="/faq" element={<>FAQ</>} />
       </Routes>
+      <Footer />
     </>
   );
 };
