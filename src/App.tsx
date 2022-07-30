@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { AppBar, Container, Toolbar, Typography } from '@mui/material';
-import { VideosTable } from './components/videos-table';
+import { Routes, Route } from 'react-router-dom';
+
+import { VideosTable } from './components/VideosTable';
 import { getVideos } from './services/videos';
 import { ProcessedVideo } from './common/interfaces';
+import { Header } from './components/Header';
 
 import "./index.css";
 
@@ -18,14 +20,14 @@ const App: React.FC = () => {
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Videos</Typography>
-        </Toolbar>
-      </AppBar>
-      <Container>
-        <VideosTable videos={videos} />
-      </Container>
+      <Header></Header>
+      <Routes>
+        <Route path="/" element={<VideosTable videos={videos} />} />
+        <Route path="/video/new" element={<>New Video</>} />
+        <Route path="/video/edit/:authorId/:videoId" element={<>Edit Video</>} />
+        <Route path="/about-us" element={<>About us</>} />
+        <Route path="/faq" element={<>FAQ</>} />
+      </Routes>
     </>
   );
 };
