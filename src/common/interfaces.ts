@@ -7,7 +7,6 @@ export interface Video {
   id: number;
   catIds: number[];
   name: string;
-  formats: string;
   releaseDate: string;
 }
 

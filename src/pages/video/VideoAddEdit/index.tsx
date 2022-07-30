@@ -13,6 +13,10 @@ import { Container, InputLabel, OutlinedInput } from '@mui/material';
 import { getCategories } from '../../../services/categories';
 import { getAuthors } from '../../../services/authors';
 import { Category, Author } from '../../../common/interfaces';
+import { addVideo } from '../../../services/videos';
+
+const DEFAULT_FORMATS = { two: { res: '1080p', size: 1000 } };
+const RELEASE_DATE = '2022-08-05';
 
 export const VideoAddEdit: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +25,8 @@ export const VideoAddEdit: React.FC = () => {
   const [authors, setAuthors] = React.useState<Author[]>([]);
   const [selectedAuthorId, setSelectedAuthorId] = React.useState<number>();
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>([]);
+
+  const isFormValid = (name !== '' && selectedAuthorId && selectedCategories.length > 0) || false;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,11 +37,34 @@ export const VideoAddEdit: React.FC = () => {
     fetchData();
   }, []);
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const author = authors?.find((author) => author.id === selectedAuthorId);
+
+    if (author) {
+      const newVideo = {
+        id: author.videos.length + 1,
+        catIds: selectedCategories.map((categoryId) => parseInt(categoryId)),
+        name: name,
+        formats: DEFAULT_FORMATS,
+        releaseDate: RELEASE_DATE
+      };
+
+      author.videos = [...author.videos, newVideo];
+
+      try {
+        const video = await addVideo(author);
+        if (video) {
+          redirectBack();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
-  const onCancel = () => {
+  const redirectBack = () => {
     navigate('/');
   };
 
@@ -112,6 +141,8 @@ export const VideoAddEdit: React.FC = () => {
               variant="contained"
               size="medium"
               color="primary"
+              type="submit"
+              disabled={!isFormValid}
             >
               Submit
             </Button>
@@ -119,7 +150,7 @@ export const VideoAddEdit: React.FC = () => {
               variant="contained"
               size="medium"
               color="secondary"
-              onClick={onCancel}
+              onClick={redirectBack}
             >
               Cancel
             </Button>

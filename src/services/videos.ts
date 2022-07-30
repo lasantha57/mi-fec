@@ -21,3 +21,20 @@ export const getVideos = async (): Promise<ProcessedVideo[]> => {
     resolve(videos)
   })
 };
+
+export const addVideo = (author: Author): Promise<Author> => {
+  return new Promise((resolve, reject) => {
+    fetch(`${process.env.REACT_APP_API}/authors/${author.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        videos: author.videos,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => response.json())
+      .then(author => resolve(author))
+      .catch(error => reject(error));
+  });
+};
