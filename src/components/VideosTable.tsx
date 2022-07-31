@@ -1,8 +1,10 @@
-import React from 'react';
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { ProcessedVideo } from '../common/interfaces';
+
+const DEFAULT_PAGE_SIZE = 5;
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -26,6 +28,18 @@ interface VideosTableProps {
 
 export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, onDelete, onEdit }) => {
 
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_PAGE_SIZE);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   const filterVideos = videos.filter((video) => {
     if (searchText === '') return video;
     if (video?.name?.toLocaleLowerCase()?.includes(searchText) ||
@@ -37,7 +51,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
   });
 
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+    <TableContainer component={Paper} sx={{ maxHeight: 550 }}>
       <Table stickyHeader aria-label="A Video table">
         <StyledTableHead>
           <TableRow>
@@ -83,6 +97,18 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
             </StyledTableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 20]}
+              count={filterVideos.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );
