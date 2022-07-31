@@ -1,5 +1,5 @@
 import { getCategories } from './categories';
-import { getAuthors } from './authors';
+import { getAuthors, getAuthorById } from './authors';
 import { Author, ProcessedVideo, Video } from '../common/interfaces';
 
 export const getVideos = async (): Promise<ProcessedVideo[]> => {
@@ -30,6 +30,25 @@ export const addVideo = (author: Author): Promise<Author> => {
       body: JSON.stringify({
         videos: author.videos,
       }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => response.json())
+      .then(author => resolve(author))
+      .catch(error => reject(error));
+  });
+};
+
+export const deleteVideo = async (authorId: number, videoId: number): Promise<Author> => {
+
+  const author = await getAuthorById(authorId);
+  const videos = author.videos.filter(video => video.id !== videoId);
+
+  return new Promise((resolve, reject) => {
+    fetch(`${process.env.REACT_APP_API}/authors/${authorId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ videos }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
