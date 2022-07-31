@@ -26,10 +26,10 @@ export const VideoAddEdit: React.FC = () => {
   const [name, setName] = React.useState('');
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [authors, setAuthors] = React.useState<Author[]>([]);
-  const [selectedAuthorId, setSelectedAuthorId] = React.useState<number>(1);
+  const [selectedAuthorId, setSelectedAuthorId] = React.useState<number>(-1);
   const [selectedCategories, setSelectedCategories] = React.useState<number[]>([]);
 
-  const isFormValid = (name !== '' && selectedAuthorId && selectedCategories.length > 0) || false;
+  const isFormValid = (name !== '' && selectedAuthorId !== -1 && selectedCategories.length > 0) || false;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +40,7 @@ export const VideoAddEdit: React.FC = () => {
       if (isEditMode) {
         const auther = authors?.find(author => author.id === parseInt(authorId));
         const video = auther?.videos?.find(video => video.id === parseInt(videoId));
-        
+
         if (video && auther) {
           setName(video.name);
           setSelectedAuthorId(auther.id);
@@ -78,7 +78,7 @@ export const VideoAddEdit: React.FC = () => {
         };
         author.videos = [...author.videos, newVideo];
       }
-      
+
       try {
         const updatedVideo = await addVideo(author);
         if (updatedVideo) {
@@ -132,6 +132,9 @@ export const VideoAddEdit: React.FC = () => {
                 value={selectedAuthorId}
                 onChange={handleAuthorChange}
                 input={<OutlinedInput label="Author" />}>
+                <MenuItem value="-1" sx={{ display: 'none' }}>
+                  Please Select Author
+                </MenuItem>
                 {
                   authors.map((author) => (
                     <MenuItem key={author.id} value={author.id}>
