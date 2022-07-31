@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Typography, Box, TextField } from '@mui/material';
 import { Container } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
 
 import { ProcessedVideo } from '../../../common/interfaces';
 import { deleteVideo, getVideos } from '../../../services/videos';
@@ -43,10 +43,6 @@ export const VideoList: React.FC = () => {
     });
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
-  };
-
   return (
     <Container maxWidth={false}>
       <Box>
@@ -55,9 +51,9 @@ export const VideoList: React.FC = () => {
         </Typography>
         <TextField
           value={searchText}
-          onChange={handleChange}
-          variant="outlined"
+          onChange={(event) => setSearchText(event.target.value)}
           label="Search Videos"
+          type={'search'}
           fullWidth
         />
         <Box my={3}>

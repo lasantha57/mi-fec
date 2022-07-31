@@ -108,23 +108,22 @@ export const VideoAddEdit: React.FC = () => {
   return (
     <Container maxWidth={false}>
       <Box>
-        <Typography variant="h4">
+        <Typography variant="h4" my={3}>
           {isEditMode ? `Edit Video: ${name}` : 'Add Video'}
         </Typography>
         <Divider />
         <Box component="form" onSubmit={onSubmit}>
-          <Box>
+          <Box my={3}>
             <TextField
               required
               name="name"
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
               label="Name"
-              size="medium"
               sx={{ width: '80%' }}
             />
           </Box>
-          <Box>
+          <Box my={2}>
             <FormControl sx={{ width: '80%' }}>
               <InputLabel>Author *</InputLabel>
               <Select
@@ -144,7 +143,7 @@ export const VideoAddEdit: React.FC = () => {
               </Select>
             </FormControl>
           </Box>
-          <Box>
+          <Box my={3}>
             <FormControl sx={{ width: '80%' }}>
               <InputLabel>Video Categories *</InputLabel>
               <Select
@@ -163,19 +162,18 @@ export const VideoAddEdit: React.FC = () => {
               </Select>
             </FormControl>
           </Box>
-          <Box>
+          <Box my={3}>
             <Button
               variant="contained"
-              size="medium"
               color="primary"
               type="submit"
               disabled={!isFormValid}
+              sx={{ mr: 1 }}
             >
               Submit
             </Button>
             <Button
               variant="contained"
-              size="medium"
               color="secondary"
               onClick={redirectHome}
             >

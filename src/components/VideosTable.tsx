@@ -1,7 +1,21 @@
 import React from 'react';
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 import { ProcessedVideo } from '../common/interfaces';
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  }
+}));
+
+const StyledTableHead = styled(TableHead)(({ theme }) => ({
+  [`& th`]: {
+    fontWeight: 'bold',
+    border: `1px solid ${theme.palette.action.selected}`
+  }
+}));
 
 interface VideosTableProps {
   videos: ProcessedVideo[];
@@ -23,9 +37,9 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
   });
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
+    <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+      <Table stickyHeader aria-label="A Video table">
+        <StyledTableHead>
           <TableRow>
             <TableCell>Video Name</TableCell>
             <TableCell>Author</TableCell>
@@ -34,10 +48,10 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
             <TableCell>Release Date</TableCell>
             <TableCell>Options</TableCell>
           </TableRow>
-        </TableHead>
+        </StyledTableHead>
         <TableBody>
           {filterVideos.map((video) => (
-            <TableRow key={video.id}>
+            <StyledTableRow key={video.id} hover>
               <TableCell component="th" scope="row">
                 {video.name}
               </TableCell>
@@ -52,6 +66,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
                     size="small"
                     color="primary"
                     onClick={() => onEdit(video.id, video.authorId)}
+                    sx={{ mr: 1 }}
                   >
                     Edit
                   </Button>
@@ -65,7 +80,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
                   </Button>
                 </Box>
               </TableCell>
-            </TableRow>
+            </StyledTableRow>
           ))}
         </TableBody>
       </Table>

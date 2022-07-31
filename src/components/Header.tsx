@@ -1,8 +1,7 @@
-import { AppBar, Toolbar, Typography, Box, Button, IconButton, Menu, MenuItem, Container } from '@mui/material';
 import React, { useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Box, Button, IconButton, Menu, MenuItem, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useNavigate } from "react-router-dom";
-import { Link as RouterLink } from 'react-router-dom';
 
 const pages = [
   {
@@ -22,6 +21,26 @@ const pages = [
   }
 ];
 
+const styles = {
+  backgroundBlack: {
+    backgroundColor: 'black'
+  },
+  title: {
+    mr: 2,
+    fontWeight: 700,
+    letterSpacing: '.3rem',
+    color: 'inherit',
+    textDecoration: 'none',
+  },
+  xs: {
+    flexGrow: 1,
+    display: { xs: 'flex', md: 'none' }
+  },
+  md: {
+    display: { xs: 'none', md: 'flex' }
+  }
+}
+
 export const Header: React.FC = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
@@ -36,7 +55,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={styles.backgroundBlack}>
       <Container disableGutters maxWidth={false}>
         <Toolbar>
           <Typography
@@ -44,20 +63,12 @@ export const Header: React.FC = () => {
             noWrap
             component="a"
             href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            sx={{...styles.title, ...styles.md}}
           >
             VIDEOS
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={styles.xs}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -97,16 +108,7 @@ export const Header: React.FC = () => {
             noWrap
             component="a"
             href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            sx={{...styles.title, ...styles.xs}}
           >
             VIDEOS
           </Typography>
