@@ -10,6 +10,7 @@ export const getVideos = async (): Promise<ProcessedVideo[]> => {
       id: video.id,
       name: video.name,
       author: author.name,
+      authorId: author.id,
       categories: categories.filter((category) => video.catIds.includes(category.id)).map((category) => category.name).join(', '),
       format: 'best 1080p',
       releaseDate: video.releaseDate,

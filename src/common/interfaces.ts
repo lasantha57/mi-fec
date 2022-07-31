@@ -19,6 +19,7 @@ export interface Author {
 export interface ProcessedVideo {
   id: number;
   name: string;
+  authorId: number;
   author: string;
   categories: string;
   format: string;

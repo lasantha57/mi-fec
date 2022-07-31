@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -16,15 +16,18 @@ import { Category, Author } from '../../../common/interfaces';
 import { addVideo } from '../../../services/videos';
 
 const DEFAULT_FORMATS = { two: { res: '1080p', size: 1000 } };
-const RELEASE_DATE = '2022-08-05';
 
 export const VideoAddEdit: React.FC = () => {
   const navigate = useNavigate();
+  const search = useLocation().search;
+  const authorId = new URLSearchParams(search).get('authorId');
+  const videoId = new URLSearchParams(search).get('videoId');
+  const isEditMode = authorId && videoId;
   const [name, setName] = React.useState('');
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [authors, setAuthors] = React.useState<Author[]>([]);
-  const [selectedAuthorId, setSelectedAuthorId] = React.useState<number>();
-  const [selectedCategories, setSelectedCategories] = React.useState<string[]>([]);
+  const [selectedAuthorId, setSelectedAuthorId] = React.useState<number>(1);
+  const [selectedCategories, setSelectedCategories] = React.useState<number[]>([]);
 
   const isFormValid = (name !== '' && selectedAuthorId && selectedCategories.length > 0) || false;
 
@@ -33,30 +36,53 @@ export const VideoAddEdit: React.FC = () => {
       const [categories, authors] = await Promise.all([getCategories(), getAuthors()]);
       setCategories(categories);
       setAuthors(authors);
+
+      if (isEditMode) {
+        const auther = authors?.find(author => author.id === parseInt(authorId));
+        const video = auther?.videos?.find(video => video.id === parseInt(videoId));
+        
+        if (video && auther) {
+          setName(video.name);
+          setSelectedAuthorId(auther.id);
+          setSelectedCategories(video.catIds);
+        }
+      }
     };
     fetchData();
   }, []);
 
+  const getRandomReleaseDate = () => {
+    const maxDate = Date.now();
+    const timestamp = Math.floor(Math.random() * maxDate);
+    return new Date(timestamp).toISOString().substring(0, 10);
+  }
+
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const author = authors?.find((author) => author.id === selectedAuthorId);
-
+    const author = authors?.find(author => author.id === selectedAuthorId);
     if (author) {
-      const newVideo = {
-        id: author.videos.length + 1,
-        catIds: selectedCategories.map((categoryId) => parseInt(categoryId)),
-        name: name,
-        formats: DEFAULT_FORMATS,
-        releaseDate: RELEASE_DATE
-      };
-
-      author.videos = [...author.videos, newVideo];
-
-      try {
-        const video = await addVideo(author);
+      if (isEditMode) {
+        const video = author?.videos?.find(video => video.id === parseInt(videoId));
         if (video) {
-          redirectBack();
+          video.name = name;
+          video.catIds = selectedCategories;
+        }
+      } else {
+        const newVideo = {
+          id: author.videos.length + 1,
+          catIds: selectedCategories,
+          name: name,
+          formats: DEFAULT_FORMATS,
+          releaseDate: getRandomReleaseDate()
+        };
+        author.videos = [...author.videos, newVideo];
+      }
+      
+      try {
+        const updatedVideo = await addVideo(author);
+        if (updatedVideo) {
+          redirectHome();
         }
       } catch (error) {
         console.log(error);
@@ -64,7 +90,7 @@ export const VideoAddEdit: React.FC = () => {
     }
   };
 
-  const redirectBack = () => {
+  const redirectHome = () => {
     navigate('/');
   };
 
@@ -75,14 +101,14 @@ export const VideoAddEdit: React.FC = () => {
 
   const handleChangeCategories = (event: SelectChangeEvent<typeof selectedCategories>) => {
     const value = event.target.value;
-    setSelectedCategories(typeof value === 'string' ? value.split(',') : value);
+    setSelectedCategories(typeof value === 'string' ? [] : value);
   };
 
   return (
     <Container maxWidth={false}>
       <Box>
-        <Typography variant="h4" component="h4" pb={1}>
-          Add Video
+        <Typography variant="h4">
+          {isEditMode ? `Edit Video: ${name}` : 'Add Video'}
         </Typography>
         <Divider />
         <Box component="form" onSubmit={onSubmit}>
@@ -150,7 +176,7 @@ export const VideoAddEdit: React.FC = () => {
               variant="contained"
               size="medium"
               color="secondary"
-              onClick={redirectBack}
+              onClick={redirectHome}
             >
               Cancel
             </Button>

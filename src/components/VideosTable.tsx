@@ -5,9 +5,11 @@ import { ProcessedVideo } from '../common/interfaces';
 
 interface VideosTableProps {
   videos: ProcessedVideo[];
+  onDelete: (videoId: number, authorId: number) => void;
+  onEdit: (videoId: number, authorId: number) => void;
 }
 
-export const VideosTable: React.FC<VideosTableProps> = ({ videos }) => {
+export const VideosTable: React.FC<VideosTableProps> = ({ videos, onDelete, onEdit }) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -36,13 +38,17 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos }) => {
                   <Button
                     variant="contained"
                     size="small"
-                    color="primary">
+                    color="primary"
+                    onClick={()=> onEdit(video.id, video.authorId)}
+                  >
                     Edit
                   </Button>
                   <Button
                     variant="contained"
                     size="small"
-                    color="error">
+                    color="error"
+                    onClick={()=> onDelete(video.id, video.authorId)}
+                    >
                     Delete
                   </Button>
                 </Box>
