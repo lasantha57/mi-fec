@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, TextField } from '@mui/material';
 import { Container } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import { VideosTable } from '../../../components/VideosTable';
 export const VideoList: React.FC = () => {
   const navigate = useNavigate();
   const [videos, setVideos] = useState<ProcessedVideo[]>([]);
+  const [searchText, setSearchText] = useState<string>('');
 
   const fetchVideos = async () => {
     try {
@@ -42,13 +43,31 @@ export const VideoList: React.FC = () => {
     });
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
+
   return (
     <Container maxWidth={false}>
       <Box>
         <Typography variant="h4" my={2}>
           VManager Demo v0.0.1
         </Typography>
-        <VideosTable videos={videos} onDelete={onDelete} onEdit={onEdit} />
+        <TextField
+          value={searchText}
+          onChange={handleChange}
+          variant="outlined"
+          label="Search Videos"
+          fullWidth
+        />
+        <Box my={3}>
+          <VideosTable
+            videos={videos}
+            searchText={searchText}
+            onDelete={onDelete}
+            onEdit={onEdit}
+          />
+        </Box>
       </Box>
     </Container>
   );

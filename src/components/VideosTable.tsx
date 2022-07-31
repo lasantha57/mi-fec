@@ -5,11 +5,23 @@ import { ProcessedVideo } from '../common/interfaces';
 
 interface VideosTableProps {
   videos: ProcessedVideo[];
+  searchText: string;
   onDelete: (videoId: number, authorId: number) => void;
   onEdit: (videoId: number, authorId: number) => void;
 }
 
-export const VideosTable: React.FC<VideosTableProps> = ({ videos, onDelete, onEdit }) => {
+export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, onDelete, onEdit }) => {
+
+  const filterVideos = videos.filter((video) => {
+    if (searchText === '') return video;
+    if (video?.name?.toLocaleLowerCase()?.includes(searchText) ||
+      video?.author?.toLocaleLowerCase()?.includes(searchText) ||
+      video?.releaseDate?.toLocaleLowerCase()?.includes(searchText) ||
+      video?.categories?.toLocaleLowerCase()?.includes(searchText)) {
+      return video
+    }
+  });
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -24,7 +36,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, onDelete, onEd
           </TableRow>
         </TableHead>
         <TableBody>
-          {videos.map((video) => (
+          {filterVideos.map((video) => (
             <TableRow key={video.id}>
               <TableCell component="th" scope="row">
                 {video.name}
@@ -39,7 +51,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, onDelete, onEd
                     variant="contained"
                     size="small"
                     color="primary"
-                    onClick={()=> onEdit(video.id, video.authorId)}
+                    onClick={() => onEdit(video.id, video.authorId)}
                   >
                     Edit
                   </Button>
@@ -47,8 +59,8 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, onDelete, onEd
                     variant="contained"
                     size="small"
                     color="error"
-                    onClick={()=> onDelete(video.id, video.authorId)}
-                    >
+                    onClick={() => onDelete(video.id, video.authorId)}
+                  >
                     Delete
                   </Button>
                 </Box>

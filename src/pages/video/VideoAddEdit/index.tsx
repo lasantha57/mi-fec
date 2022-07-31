@@ -69,10 +69,11 @@ export const VideoAddEdit: React.FC = () => {
           video.catIds = selectedCategories;
         }
       } else {
+        const id = (author.videos.at(-1) ? author.videos.at(-1)!.id : 0) + 1;
         const newVideo = {
-          id: author.videos.length + 1,
+          id,
           catIds: selectedCategories,
-          name: name,
+          name,
           formats: DEFAULT_FORMATS,
           releaseDate: getRandomReleaseDate()
         };
