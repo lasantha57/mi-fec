@@ -23,7 +23,7 @@ const pages = [
 
 const styles = {
   backgroundBlack: {
-    backgroundColor: 'black'
+    backgroundColor: 'var(--bg-black)'
   },
   title: {
     mr: 2,
@@ -117,7 +117,7 @@ export const Header: React.FC = () => {
               <Button
                 key={page.id}
                 onClick={() => handleCloseNavMenu(page.route)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'var(--bg-white)', display: 'block' }}
               >
                 {page.title}
               </Button>
