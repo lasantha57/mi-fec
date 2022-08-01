@@ -8,6 +8,7 @@ export type Category = {
     catIds: number[];
     name: string;
     releaseDate: string;
+    formats: Object;
   }
   
   export type Author = {

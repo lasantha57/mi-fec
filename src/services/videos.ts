@@ -2,6 +2,32 @@ import { getCategories } from './categories';
 import { getAuthors, getAuthorById } from './authors';
 import { Author, ProcessedVideo, Video } from '../common/types';
 
+const findFormat = (formats: Object) => {
+  // TODO: Simplyfy this logic
+  let bestResolution: any;
+  let videoFormat: any;
+
+  const resSizes = Object.values(formats);
+  const videoSizes = resSizes.map(format => format.size) as number[];
+  let maxVideoSizeOrRes = Math.max(...videoSizes);
+  const maxFormats = resSizes.filter(item => item.size === maxVideoSizeOrRes);
+
+  if (maxFormats.length === 1) {
+    bestResolution = maxFormats[0];
+    videoFormat = Object.entries(formats).find(([,value]) => value.res === bestResolution.res && value.size === bestResolution.size);
+  }
+
+  if (maxFormats.length > 1) { 
+    const resolutions = Object.values(formats).map(value => parseInt(value.res.slice(0, -1)));
+    maxVideoSizeOrRes = Math.max(...resolutions);
+    videoFormat = Object.entries(formats).find(([,value]) => parseInt(value.res.slice(0, -1)) === maxVideoSizeOrRes);
+  }
+
+  // expect video format key and the value as 2 array items
+  if (videoFormat.length === 2) return `${videoFormat[0]} ${videoFormat[1].res}`;
+  return '';
+}
+
 export const getVideos = async (): Promise<ProcessedVideo[]> => {
   const [categories, authors] = await Promise.all([getCategories(), getAuthors()])
 
@@ -12,7 +38,7 @@ export const getVideos = async (): Promise<ProcessedVideo[]> => {
       author: author.name,
       authorId: author.id,
       categories: categories.filter((category) => video.catIds.includes(category.id)).map((category) => category.name).join(', '),
-      format: 'best 1080p',
+      format: findFormat(video.formats),
       releaseDate: video.releaseDate,
     }));
     return video;
