@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import { ProcessedVideo } from '../common/interfaces';
+import { ProcessedVideo } from '../common/types';
 
 const DEFAULT_PAGE_SIZE = 5;
 

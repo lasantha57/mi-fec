@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Typography, Box, TextField } from '@mui/material';
 import { Container } from '@mui/system';
 
-import { ProcessedVideo } from '../../../common/interfaces';
+import { ProcessedVideo } from '../../../common/types';
 import { deleteVideo, getVideos } from '../../../services/videos';
 import { VideosTable } from '../../../components/VideosTable';
 

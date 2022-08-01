@@ -12,7 +12,7 @@ import { Container, InputLabel, OutlinedInput } from '@mui/material';
 
 import { getCategories } from '../../../services/categories';
 import { getAuthors } from '../../../services/authors';
-import { Category, Author } from '../../../common/interfaces';
+import { Category, Author } from '../../../common/types';
 import { addOrModifyVideo } from '../../../services/videos';
 
 const DEFAULT_FORMATS = { two: { res: '1080p', size: 1000 } };

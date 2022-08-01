@@ -1,6 +1,6 @@
 import { getCategories } from './categories';
 import { getAuthors, getAuthorById } from './authors';
-import { Author, ProcessedVideo, Video } from '../common/interfaces';
+import { Author, ProcessedVideo, Video } from '../common/types';
 
 export const getVideos = async (): Promise<ProcessedVideo[]> => {
   const [categories, authors] = await Promise.all([getCategories(), getAuthors()])
