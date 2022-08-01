@@ -23,7 +23,7 @@ export const getVideos = async (): Promise<ProcessedVideo[]> => {
   })
 };
 
-export const addVideo = (author: Author): Promise<Author> => {
+export const addOrModifyVideo = (author: Author): Promise<Author> => {
   return new Promise((resolve, reject) => {
     fetch(`${process.env.REACT_APP_API}/authors/${author.id}`, {
       method: 'PATCH',

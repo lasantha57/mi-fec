@@ -53,6 +53,7 @@ export const VideoList: React.FC = () => {
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
           label="Search Videos"
+          aria-label="Search Videos"
           type={'search'}
           fullWidth
         />

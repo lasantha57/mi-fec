@@ -13,7 +13,7 @@ const StyledFooter = styled(Box)(() => ({
 
 export const Footer: React.FC = () => {
     return (
-        <Container disableGutters maxWidth={false}>
+        <Container disableGutters maxWidth={false} component="footer">
             <StyledFooter>
                 <Typography>VManager Demo v0.01</Typography>
             </StyledFooter>

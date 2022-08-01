@@ -13,7 +13,7 @@ import { Container, InputLabel, OutlinedInput } from '@mui/material';
 import { getCategories } from '../../../services/categories';
 import { getAuthors } from '../../../services/authors';
 import { Category, Author } from '../../../common/interfaces';
-import { addVideo } from '../../../services/videos';
+import { addOrModifyVideo } from '../../../services/videos';
 
 const DEFAULT_FORMATS = { two: { res: '1080p', size: 1000 } };
 
@@ -80,9 +80,9 @@ export const VideoAddEdit: React.FC = () => {
       }
 
       try {
-        const updatedVideo = await addVideo(author);
+        const updatedVideo = await addOrModifyVideo(author);
         if (updatedVideo) {
-          redirectHome();
+          redirectToHome();
         }
       } catch (error) {
         console.log(error);
@@ -90,7 +90,7 @@ export const VideoAddEdit: React.FC = () => {
     }
   };
 
-  const redirectHome = () => {
+  const redirectToHome = () => {
     navigate('/');
   };
 
@@ -111,7 +111,11 @@ export const VideoAddEdit: React.FC = () => {
           {isEditMode ? `Edit Video: ${name}` : 'Add Video'}
         </Typography>
         <Divider />
-        <Box component="form" onSubmit={onSubmit}>
+        <Box component="form"
+          role={"form"}
+          aria-label="Video Information" 
+          onSubmit={onSubmit}
+          >
           <Box my={3}>
             <TextField
               required
@@ -119,6 +123,7 @@ export const VideoAddEdit: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
               label="Name"
+              aria-label="Video Name"
               sx={{ width: '80%' }}
             />
           </Box>
@@ -177,7 +182,7 @@ export const VideoAddEdit: React.FC = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={redirectHome}
+              onClick={redirectToHome}
             >
               Cancel
             </Button>

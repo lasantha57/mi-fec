@@ -28,7 +28,7 @@ interface VideosTableProps {
 
 export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, onDelete, onEdit }) => {
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_PAGE_SIZE);
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -79,6 +79,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
                     variant="contained"
                     size="small"
                     color="primary"
+                    aria-label="Edit Video"
                     onClick={() => onEdit(video.id, video.authorId)}
                     sx={{ mr: 1 }}
                   >
@@ -88,6 +89,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
                     variant="contained"
                     size="small"
                     color="error"
+                    aria-label="Delete Vidoe"
                     onClick={() => onDelete(video.id, video.authorId)}
                   >
                     Delete
