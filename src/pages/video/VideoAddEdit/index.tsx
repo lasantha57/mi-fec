@@ -107,7 +107,7 @@ export const VideoAddEdit: React.FC = () => {
   return (
     <Container maxWidth={false}>
       <Box>
-        <Typography variant="h4" my={3}>
+        <Typography variant="h4" my={3} data-testid="page-title">
           {isEditMode ? `Edit Video: ${name}` : 'Add Video'}
         </Typography>
         <Divider />
@@ -123,7 +123,7 @@ export const VideoAddEdit: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
               label="Name"
-              aria-label="Video Name"
+              data-testid="video-name"
               sx={{ width: '80%' }}
             />
           </Box>
