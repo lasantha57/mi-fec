@@ -26,13 +26,17 @@ export const VideoList: React.FC = () => {
   }, []);
 
   const onDelete = async (videoId: number, authorId: number) => {
-    try {
-      const deleted = await deleteVideo(authorId, videoId);
-      if (deleted) {
-        fetchVideos();
+    // TODO: Replace this default confirm with material UI custom dialog alert
+    const result = window.confirm('Are you sure you want to delete this?');
+    if (result) {
+      try {
+        const deleted = await deleteVideo(authorId, videoId);
+        if (deleted) {
+          fetchVideos();
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
     }
   }
 
