@@ -6,11 +6,13 @@ import { Container } from '@mui/system';
 import { ProcessedVideo } from '../../../common/types';
 import { deleteVideo, getVideos } from '../../../services/videos';
 import { VideosTable } from '../../../components/VideosTable';
+import { Toast } from '../../../components/Toast';
 
 export const VideoList: React.FC = () => {
   const navigate = useNavigate();
   const [videos, setVideos] = useState<ProcessedVideo[]>([]);
   const [searchText, setSearchText] = useState<string>('');
+  const [openToast, setOpenToast] = useState(false);
 
   const fetchVideos = async () => {
     try {
@@ -32,6 +34,7 @@ export const VideoList: React.FC = () => {
       try {
         const deleted = await deleteVideo(authorId, videoId);
         if (deleted) {
+          setOpenToast(true);
           fetchVideos();
         }
       } catch (error) {
@@ -47,8 +50,13 @@ export const VideoList: React.FC = () => {
     });
   }
 
+  const onToastClose = () => {
+    setOpenToast(false);
+  }
+
   return (
     <Container maxWidth={false}>
+      <Toast open={openToast} onClose={onToastClose} />
       <Box>
         <Typography variant="h4" my={2}>
           VManager Demo v0.0.1
