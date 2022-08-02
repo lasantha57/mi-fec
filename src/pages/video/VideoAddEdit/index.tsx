@@ -17,7 +17,7 @@ import { addOrModifyVideo } from '../../../services/videos';
 
 const DEFAULT_FORMATS = { two: { res: '1080p', size: 1000 } };
 
-export const VideoAddEdit: React.FC = () => {
+const VideoAddEdit: React.FC = () => {
   const navigate = useNavigate();
   const search = useLocation().search;
   const authorId = new URLSearchParams(search).get('authorId');
@@ -192,3 +192,5 @@ export const VideoAddEdit: React.FC = () => {
     </Container>
   );
 };
+
+export default VideoAddEdit;

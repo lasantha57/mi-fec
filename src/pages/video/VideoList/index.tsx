@@ -8,7 +8,7 @@ import { deleteVideo, getVideos } from '../../../services/videos';
 import { VideosTable } from '../../../components/VideosTable';
 import { Toast } from '../../../components/Toast';
 
-export const VideoList: React.FC = () => {
+const VideoList: React.FC = () => {
   const navigate = useNavigate();
   const [videos, setVideos] = useState<ProcessedVideo[]>([]);
   const [searchText, setSearchText] = useState<string>('');
@@ -67,7 +67,7 @@ export const VideoList: React.FC = () => {
           label="Search Videos"
           aria-label="Search Videos"
           type={'search'}
-          fullWidth
+          sx={{ width: '25%' }}
         />
         <Box my={3}>
           <VideosTable
@@ -81,3 +81,5 @@ export const VideoList: React.FC = () => {
     </Container>
   );
 };
+
+export default VideoList;
