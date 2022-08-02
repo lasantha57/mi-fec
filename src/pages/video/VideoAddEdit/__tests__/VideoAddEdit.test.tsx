@@ -2,7 +2,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
-import { VideoAddEdit } from '..';
+import VideoAddEdit from '..';
 
 afterEach(cleanup)
 
