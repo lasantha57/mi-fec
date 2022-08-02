@@ -51,7 +51,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
   });
 
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: 550 }}>
+    <TableContainer component={Paper}>
       <Table stickyHeader aria-label="A Video table">
         <StyledTableHead>
           <TableRow>
@@ -65,7 +65,7 @@ export const VideosTable: React.FC<VideosTableProps> = ({ videos, searchText, on
         </StyledTableHead>
         <TableBody>
           {filterVideos.map((video) => (
-            <StyledTableRow key={video.id} hover>
+            <StyledTableRow key={video.key} hover>
               <TableCell component="th" scope="row">
                 {video.name}
               </TableCell>

@@ -31,16 +31,22 @@ const findFormat = (formats: Object) => {
 export const getVideos = async (): Promise<ProcessedVideo[]> => {
   const [categories, authors] = await Promise.all([getCategories(), getAuthors()])
 
+  let key = 0;
+
   const videos = authors.flatMap((author: Author) => {
-    const video = author.videos.map((video: Video) => ({
-      id: video.id,
-      name: video.name,
-      author: author.name,
-      authorId: author.id,
-      categories: categories.filter((category) => video.catIds.includes(category.id)).map((category) => category.name).join(', '),
-      format: findFormat(video.formats),
-      releaseDate: video.releaseDate,
-    }));
+    const video = author.videos.map((video: Video) => {
+      key++;
+      const { id, name, formats, releaseDate } = video;
+      return {
+        key,
+        id,
+        name,
+        author: author.name,
+        authorId: author.id,
+        categories: categories.filter((category) => video.catIds.includes(category.id)).map((category) => category.name).join(', '),
+        format: findFormat(formats),
+        releaseDate
+    }});
     return video;
   });
 

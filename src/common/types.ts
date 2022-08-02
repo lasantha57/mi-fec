@@ -18,6 +18,7 @@ export type Category = {
   }
   
   export type ProcessedVideo = {
+    key: number;
     id: number;
     name: string;
     authorId: number;
